@@ -5,16 +5,16 @@ interface BlogPost {
   id: number;
   title: string;
   content: string;
-  excerpt: string;
-  author: {
-    name: string;
-    avatar: string;
-  };
-  coverImage: string;
-  readTime: string;
-  date: string;
-  likes: number;
-  comments: number;
+//   excerpt: string;
+//   author: {
+//     name: string;
+//     avatar: string;
+//   };
+//   coverImage: string;
+//   readTime: string;
+//   date: string;
+//   likes: number;
+//   comments: number;
 }
 
 interface BlogListProps {
