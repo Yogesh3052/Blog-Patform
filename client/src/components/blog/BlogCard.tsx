@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 // import { Heart, MessageCircle, Bookmark } from 'lucide-react';
 
 
@@ -29,8 +30,10 @@ const BlogCard: React.FC<BlogCardProps> = ({
 //   likes,
 //   comments,
 }) => {
+  const navigate = useNavigate();
+  
   const handleClick = () => {
-    window.location.href = `/blog/post/${id}`;
+    navigate(`/blog/post/${id}`);
   };
 
   return (

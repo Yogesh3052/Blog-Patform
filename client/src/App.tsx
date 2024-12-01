@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/navigation/Navbar';
 import HeroSection from './components/hero/HeroSection';
 import SignIn from './pages/SignIn';
@@ -22,15 +23,19 @@ function App() {
   }, [path]);
 
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
-      {path === '/signin' && <SignIn setIsAuthenticated={setIsAuthenticated} />}
-      {path === '/signup' && <SignUp setIsAuthenticated={setIsAuthenticated} />}
-      {path === '/blogs' && <BlogPosts />}
-      {path === '/blog/post' && <BlogPostView />}
-      {path === '/create' && <CreatePost />}
-      {path === '/' && <HeroSection isAuthenticated={isAuthenticated} />}
-    </div>
+    <Router>
+      <div className="min-h-screen bg-white">
+        <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+        <Routes>
+          <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="/signup" element={<SignUp setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="/blogs" element={<BlogPosts />} />
+          <Route path="/blog/post/:id" element={<BlogPostView isAuthenticated={isAuthenticated} />} />
+          <Route path="/create" element={<CreatePost />} />
+          <Route path="/" element={<HeroSection isAuthenticated={isAuthenticated} />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
