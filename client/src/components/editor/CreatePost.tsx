@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Upload, Wand2, Sparkles, Image as ImageIcon } from 'lucide-react';
 import Editor from './Editor.tsx';
 import AIFeatures from './AIFeatures.tsx';
+import axios from 'axios';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
@@ -10,9 +11,38 @@ const CreatePost = () => {
   const [coverImage, setCoverImage] = useState('');
   const [isAIFeaturesOpen, setIsAIFeaturesOpen] = useState(false);
 
-  const handlePublish = () => {
-    // Handle publishing logic
-    console.log({ title, content, coverImage });
+  const handlePublish = async () => {
+    try {
+      const postData = {
+        title,
+        content,
+        // coverImage
+      };
+
+      const token = localStorage.getItem('token');
+
+      const response = await axios.post('http://localhost:3360/api/posts', postData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (response.status === 201 || response.status === 200) {
+        setTitle('');
+        setContent('');
+        // setCoverImage('');
+        alert('Post published successfully!');
+        window.location.href = '/blogs';
+      }
+    } catch (error) {
+      console.error('Error publishing post:', error);
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        alert('Please login to publish posts');
+      } else {
+        alert('Failed to publish post. Please try again.');
+      }
+    }
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
