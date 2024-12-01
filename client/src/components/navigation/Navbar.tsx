@@ -1,15 +1,26 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import NavLink from './NavLink';
+import { LogOut } from 'lucide-react';
 
-const Navbar = () => {
+interface NavbarProps {
+  isAuthenticated: boolean;
+  setIsAuthenticated: (value: boolean) => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated }) => {
   const handleSignIn = () => {
-    // Navigate to sign in page
     window.location.href = '/signin';
   };
 
   const handleGetStarted = () => {
-    // Navigate to sign up page
     window.location.href = '/signup';
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+    window.location.href = '/';
   };
 
   return (
@@ -25,49 +36,48 @@ const Navbar = () => {
           </motion.div>
           
           <div className="hidden md:flex items-center space-x-8">
-            <NavLink href="#" text="Home" />
-            <NavLink href="#" text="Stories" />
+            <NavLink href="/" text="Home" />
+            <NavLink href="/blogs" text="Stories" />
             <NavLink href="#" text="About" />
             <NavLink href="#" text="Contact" />
           </div>
 
           <div className="flex items-center space-x-4">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 text-green-600 font-medium"
-              onClick={handleSignIn}
-            >
-              Sign in
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 bg-green-600 text-white rounded-full font-medium"
-              onClick={handleGetStarted}
-            >
-              Get started
-            </motion.button>
+            {!isAuthenticated ? (
+              <>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-2 text-green-600 font-medium"
+                  onClick={handleSignIn}
+                >
+                  Sign in
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-2 bg-green-600 text-white rounded-full font-medium"
+                  onClick={handleGetStarted}
+                >
+                  Get started
+                </motion.button>
+              </>
+            ) : (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-4 py-2 text-gray-600 font-medium flex items-center space-x-2"
+                onClick={handleLogout}
+              >
+                <LogOut className="w-5 h-5" />
+                <span>Logout</span>
+              </motion.button>
+            )}
           </div>
         </div>
       </div>
     </nav>
   );
 };
-
-interface NavLinkProps {
-  href: string;
-  text: string;
-}
-
-const NavLink: React.FC<NavLinkProps> = ({ href, text }) => (
-  <motion.a
-    href={href}
-    whileHover={{ y: -2 }}
-    className="text-gray-600 hover:text-gray-900 transition-colors"
-  >
-    {text}
-  </motion.a>
-);
 
 export default Navbar;

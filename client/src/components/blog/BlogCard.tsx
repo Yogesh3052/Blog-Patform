@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Heart, MessageCircle, Bookmark } from 'lucide-react';
 
 interface BlogCardProps {
+  id: number;
   title: string;
   excerpt: string;
   author: {
@@ -17,6 +18,7 @@ interface BlogCardProps {
 }
 
 const BlogCard: React.FC<BlogCardProps> = ({
+  id,
   title,
   excerpt,
   author,
@@ -27,7 +29,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
   comments,
 }) => {
   const handleClick = () => {
-    window.location.href = '/blog/post';
+    window.location.href = `/blog/post/${id}`;
   };
 
   return (

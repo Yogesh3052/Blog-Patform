@@ -3,12 +3,24 @@ import { motion } from 'framer-motion';
 import { Pen, BookOpen, Users } from 'lucide-react';
 import FeatureItem from './FeatureItem';
 
-const HeroContent = () => {
+interface HeroContentProps {
+  isAuthenticated: boolean;
+}
+
+const HeroContent: React.FC<HeroContentProps> = ({ isAuthenticated }) => {
   const features = [
     { icon: Pen, text: "Share your unique perspective" },
     { icon: BookOpen, text: "Discover thought-provoking content" },
     { icon: Users, text: "Connect with like-minded readers" }
   ];
+
+  const handleStartWriting = () => {
+    window.location.href = isAuthenticated ? '/create' : '/signup';
+  };
+
+  const handleStartReading = () => {
+    window.location.href = isAuthenticated ? '/blogs' : '/signin';
+  };
 
   return (
     <motion.div
@@ -30,22 +42,26 @@ const HeroContent = () => {
         ))}
       </div>
 
-      <div className="flex space-x-4 pt-6">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="px-8 py-3 bg-green-600 text-white rounded-full font-medium text-lg hover:bg-green-700 transition-colors"
-        >
-          Start Writing
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="px-8 py-3 border-2 border-green-600 text-green-600 rounded-full font-medium text-lg hover:bg-green-50 transition-colors"
-        >
-          Start Reading
-        </motion.button>
-      </div>
+      {!isAuthenticated && (
+        <div className="flex space-x-4 pt-6">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-8 py-3 bg-green-600 text-white rounded-full font-medium text-lg hover:bg-green-700 transition-colors"
+            onClick={handleStartWriting}
+          >
+            Start Writing
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-8 py-3 border-2 border-green-600 text-green-600 rounded-full font-medium text-lg hover:bg-green-50 transition-colors"
+            onClick={handleStartReading}
+          >
+            Start Reading
+          </motion.button>
+        </div>
+      )}
     </motion.div>
   );
 };

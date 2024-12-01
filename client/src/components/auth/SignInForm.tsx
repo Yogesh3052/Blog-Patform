@@ -2,13 +2,40 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
 
-const SignInForm = () => {
+interface SignInFormProps {
+  setIsAuthenticated: (value: boolean) => void;
+}
+
+const SignInForm: React.FC<SignInFormProps> = ({ setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle sign in logic here
+    setError('');
+
+    try {
+      const response = await fetch('http://localhost:3360/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('token', data.token);
+        setIsAuthenticated(true);
+        window.location.href = '/blogs';
+      } else {
+        setError(data.message || 'Login failed');
+      }
+    } catch (err) {
+      setError('Failed to connect to server');
+    }
   };
 
   return (
@@ -20,6 +47,12 @@ const SignInForm = () => {
       <h2 className="text-3xl font-serif font-bold text-gray-900 mb-6">Welcome back</h2>
       <p className="text-gray-600 mb-8">Enter your details to continue your journey</p>
       
+      {error && (
+        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg">
+          {error}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>

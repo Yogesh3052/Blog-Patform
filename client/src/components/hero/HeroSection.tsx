@@ -3,7 +3,11 @@ import { motion } from 'framer-motion';
 import HeroContent from './HeroContent';
 import HeroImage from './HeroImage';
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  isAuthenticated: boolean;
+}
+
+const HeroSection: React.FC<HeroSectionProps> = ({ isAuthenticated }) => {
   return (
     <div className="relative min-h-screen bg-white overflow-hidden pt-16">
       {/* Background Pattern */}
@@ -20,7 +24,7 @@ const HeroSection = () => {
       {/* Main Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <HeroContent />
+          <HeroContent isAuthenticated={isAuthenticated} />
           <HeroImage />
         </div>
       </div>

@@ -10,7 +10,7 @@ const aiRoutes = require('./routes/ai');
 const aiLogger = require('./middleware/aiLogger');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3360;
 
 // Middleware
 app.use(cors());

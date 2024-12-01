@@ -1,9 +1,56 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Filter, PenSquare } from 'lucide-react';
 import BlogList from '../components/blog/BlogList';
 
+interface BlogPost {
+  id: number;
+  title: string;
+  content: string;
+  excerpt: string;
+  author: {
+    name: string;
+    avatar: string;
+  };
+  coverImage: string;
+  readTime: string;
+  date: string;
+  likes: number;
+  comments: number;
+}
+
 const BlogPosts = () => {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:3360/api/posts', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setPosts(data);
+        } else {
+          setError('Failed to fetch posts');
+        }
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+        setError('Failed to fetch posts');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
   const handleCompose = () => {
     window.location.href = '/create';
   };
@@ -48,7 +95,17 @@ const BlogPosts = () => {
             ))}
           </div>
           
-          <BlogList />
+          {loading ? (
+            <div className="text-center py-8">
+              <p>Loading posts...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center py-8 text-red-600">
+              <p>{error}</p>
+            </div>
+          ) : (
+            <BlogList posts={posts} />
+          )}
         </div>
 
         {/* Compose Button */}
