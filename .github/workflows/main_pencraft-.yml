@@ -21,6 +21,7 @@ jobs:
         with:
           node-version: '18.x'
 
+      # Install and build client app
       - name: Install dependencies for client
         run: |
           cd client
@@ -31,16 +32,20 @@ jobs:
           cd client
           npm run build
 
+      # Install server dependencies
       - name: Install dependencies for server
         run: |
           cd server
           npm install
 
+      # Upload only required files for deployment
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .
+          path: |
+            server/**/*
+            client/build/**/*
 
   deploy:
     runs-on: ubuntu-latest
@@ -55,11 +60,30 @@ jobs:
         with:
           name: node-app
 
+      - name: Add web.config for Azure App Service
+        run: |
+          echo "<configuration>
+            <system.webServer>
+              <handlers>
+                <add name=\"iisnode\" path=\"index.js\" verb=\"*\" modules=\"iisnode\" />
+              </handlers>
+              <rewrite>
+                <rules>
+                  <rule name=\"DynamicContent\">
+                    <conditions>
+                      <add input=\"{REQUEST_FILENAME}\" matchType=\"IsFile\" negate=\"True\" />
+                    </conditions>
+                    <action type=\"Rewrite\" url=\"index.js\" />
+                  </rule>
+                </rules>
+              </rewrite>
+            </system.webServer>
+          </configuration>" > server/web.config
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'pencraft-'
-          slot-name: 'Production'
-          package: .
+          package: server
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_809C00860A804ADBB2456E50B74B071B }}
