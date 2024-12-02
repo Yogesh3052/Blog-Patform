@@ -18,7 +18,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ setIsAuthenticated }) => {
 
     try {
       // Register the user
-      const registerResponse = await fetch('http://localhost:3360/api/auth/register', {
+      const registerResponse = await fetch('http://localhost:8080/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ setIsAuthenticated }) => {
       }
 
       // If registration successful, login automatically
-      const loginResponse = await fetch('http://localhost:3360/api/auth/login', {
+      const loginResponse = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

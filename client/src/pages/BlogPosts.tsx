@@ -28,7 +28,7 @@ const BlogPosts = () => {
     const fetchPosts = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:3360/api/posts', {
+        const response = await fetch('http://localhost:8080/api/posts', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
