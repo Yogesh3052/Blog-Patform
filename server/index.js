@@ -1,13 +1,14 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const postRoutes = require('./routes/posts');
-const authRoutes = require('./routes/auth');
-const errorHandler = require('./middleware/errorHandler');
-const limiter = require('./middleware/rateLimiter');
-const logger = require('./middleware/logger');
-const aiRoutes = require('./routes/ai');
-const aiLogger = require('./middleware/aiLogger');
+const postRoutes = require('./src/routes/posts');
+const authRoutes = require('./src/routes/auth');
+const errorHandler = require('./src/middleware/errorHandler');
+const limiter = require('./src/middleware/rateLimiter');
+const logger = require('./src/middleware/logger');
+const aiRoutes = require('./src/routes/ai');
+const aiLogger = require('./src/middleware/aiLogger');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3360;
@@ -19,10 +20,15 @@ app.use(logger);
 app.use(limiter);
 
 // Routes
+app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use('/api/posts', postRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/ai', aiLogger);
 app.use('/api/ai', aiRoutes);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+});
 
 // Error handling
 app.use(errorHandler);
