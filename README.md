@@ -139,5 +139,6 @@ A modern full-stack blogging platform built with React and Node.js
     - Deploy the artifact to Azure.
 
 ## 🏗️ Architecture Overview
-
+   <img src="assets/Architecture.png" height="400" width="450" align="left" hspace="10">
+<img src="assets/UserFlow.png" height="400" width="450" align="right" hspace="10">
 
