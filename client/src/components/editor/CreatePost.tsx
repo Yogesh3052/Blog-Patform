@@ -65,7 +65,7 @@ const CreatePost = () => {
           className="bg-white rounded-xl shadow-lg p-6"
         >
           {/* Cover Image Upload */}
-          <div className="mb-8">
+          {/* <div className="mb-8">
             {coverImage ? (
               <div className="relative h-64 rounded-lg overflow-hidden">
                 <img
@@ -94,7 +94,7 @@ const CreatePost = () => {
                 </div>
               </label>
             )}
-          </div>
+          </div> */}
 
           {/* Title Input */}
           <input

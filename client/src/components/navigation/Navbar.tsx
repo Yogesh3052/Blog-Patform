@@ -38,8 +38,8 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated }) 
           <div className="hidden md:flex items-center space-x-8">
             <NavLink href="/" text="Home" />
             <NavLink href="/blogs" text="Stories" />
-            <NavLink href="#" text="About" />
-            <NavLink href="#" text="Contact" />
+            {/* <NavLink href="#" text="About" />
+            <NavLink href="#" text="Contact" /> */}
           </div>
 
           <div className="flex items-center space-x-4">

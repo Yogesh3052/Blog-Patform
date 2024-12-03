@@ -13,6 +13,18 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+const fs = require('fs');
+
+const logDir = path.join(__dirname, 'logs');
+const logFile = path.join(logDir, 'access.log');
+
+// Create logs directory if it doesn't exist
+if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir, { recursive: true });
+}
+
+const accessLogStream = fs.createWriteStream(logFile, { flags: 'a' });
+
 // Middleware
 app.use(cors());
 app.use(express.json());
