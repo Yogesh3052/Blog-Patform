@@ -32,7 +32,7 @@ const BlogPostView: React.FC<BlogPostViewProps> = ({ isAuthenticated }) => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(`process.env.API_BASE_URL/api/posts/${id}`);
+        const response = await fetch(`/api/posts/${id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch post');
         }

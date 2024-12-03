@@ -16,7 +16,7 @@ const SignInForm: React.FC<SignInFormProps> = ({ setIsAuthenticated }) => {
     setError('');
 
     try {
-      const response = await fetch('process.env.API_BASE_URL/api/auth/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
