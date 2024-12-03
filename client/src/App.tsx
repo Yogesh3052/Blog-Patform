@@ -29,9 +29,9 @@ function App() {
         <Routes>
           <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/signup" element={<SignUp setIsAuthenticated={setIsAuthenticated} />} />
-          <Route path="/blogs" element={<BlogPosts />} />
+          <Route path="/blogs" element={<BlogPosts setIsAuthenticated={setIsAuthenticated}/>} />
           <Route path="/blog/post/:id" element={<BlogPostView isAuthenticated={isAuthenticated} />} />
-          <Route path="/create" element={<CreatePost />} />
+          <Route path="/create" element={<CreatePost isAuthenticated={isAuthenticated}/>} />
           <Route path="/" element={<HeroSection isAuthenticated={isAuthenticated} />} />
         </Routes>
       </div>

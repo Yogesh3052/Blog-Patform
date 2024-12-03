@@ -19,7 +19,11 @@ interface BlogPost {
   comments: number;
 }
 
-const BlogPosts = () => {
+interface BlogPostsProps {
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const BlogPosts: React.FC<BlogPostsProps> = ({ setIsAuthenticated }) => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,6 +42,10 @@ const BlogPosts = () => {
           const data = await response.json();
           setPosts(data);
         } else {
+          if (response.status === 401) {
+            setIsAuthenticated(false);
+            localStorage.removeItem('token');
+          }
           setError('Failed to fetch posts');
         }
       } catch (error) {

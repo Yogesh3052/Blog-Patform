@@ -5,7 +5,11 @@ import Editor from './Editor.tsx';
 import AIFeatures from './AIFeatures.tsx';
 import axios from 'axios';
 
-const CreatePost = () => {
+interface CreatePostProps {
+  isAuthenticated: boolean;
+}
+
+const CreatePost: React.FC<CreatePostProps> = ({ isAuthenticated }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [coverImage, setCoverImage] = useState('');
